@@ -1,0 +1,1 @@
+export type CalculatedPrice = { basePrice: number, finalPrice: number };

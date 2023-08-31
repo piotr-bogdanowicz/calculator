@@ -1,7 +1,7 @@
 import { ServiceTypeNames } from "../types/service-type-names";
 import { ServiceYearPrices } from "../types/service-year-prices";
 
-const priceMockup : ServiceYearPrices = {
+export const priceMockup : ServiceYearPrices = {
     2020: { 
         [ServiceTypeNames.photography]: 1700,
         [ServiceTypeNames.videoRecording]: 1700,
