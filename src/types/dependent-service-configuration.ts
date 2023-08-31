@@ -1,14 +1,14 @@
-import { dependentServiceConfigurationsMock } from "../mocks/dependent-service-configurations-mock";
+import { dependentServiceConfigurationsData } from "../data/dependent-service-configurations-data";
 import { ServiceType } from "./service-type";
 
 export type DependentServiceConfiguration = { parentServices: ServiceType[], requiresAllParents: boolean, dependentService: ServiceType};
 
 export const getDependentServiceConfigurationsForDependentService = (dependentServiceType: ServiceType): DependentServiceConfiguration[]  => {
-    return dependentServiceConfigurationsMock.filter(configuration => configuration.dependentService === dependentServiceType);
+    return dependentServiceConfigurationsData.filter(configuration => configuration.dependentService === dependentServiceType);
 };
 
 export const getDependentServiceConfigurationsForParentService = (parentServiceType: ServiceType): DependentServiceConfiguration[]  => {
-    return dependentServiceConfigurationsMock.filter(configuration => configuration.parentServices.includes(parentServiceType));
+    return dependentServiceConfigurationsData.filter(configuration => configuration.parentServices.includes(parentServiceType));
 };
 
 export const canAddService = (selectedServices: ServiceType[], service: ServiceType): boolean => {

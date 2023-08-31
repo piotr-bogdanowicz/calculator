@@ -1,4 +1,6 @@
-import { priceMockup } from "./mocks/service-year-price-mock";
+import { pricesData } from "./data/service-year-price-data";
+import { ActionTypes } from "./enums/action-enum";
+import { MissingPriceConfigurationError } from "./errors/missing-price-configuration-error";
 import { CalculatedPrice } from "./types/calculated-price";
 import { canAddService, findDependentServicesToRemove, getDependentServiceConfigurationsForDependentService, getDependentServiceConfigurationsForParentService } from "./types/dependent-service-configuration";
 import { Discount, getDiscountsForSelection } from "./types/discount";
@@ -10,9 +12,9 @@ export const updateSelectedServices = (
     action: { type: "Select" | "Deselect"; service: ServiceType }
 ): ServiceType[] => {
     switch (action.type) {
-        case "Select":
+        case ActionTypes.Select:
             return selectService(previouslySelectedServices, action.service);
-        case "Deselect":
+        case ActionTypes.Deselect:
             return deselectService(previouslySelectedServices, action.service);
     }
 }
@@ -45,8 +47,6 @@ const deselectService = (previouslySelectedServices: ServiceType[], service: Ser
 }
 
 export const calculatePrice = (selectedServices: ServiceType[], selectedYear: ServiceYear) : CalculatedPrice => {
-    
-
     if (selectedServices.length === 0)
     {
         return { basePrice: 0, finalPrice: 0 };
@@ -62,7 +62,12 @@ export const calculatePrice = (selectedServices: ServiceType[], selectedYear: Se
 };
 
 const getPriceForService = (service: ServiceType, year: ServiceYear, availableDiscounts: Discount[]) : [number, number] => {
-    const basePrice = priceMockup[year][service];
+    let basePrice = 0;
+    try {
+        basePrice = pricesData[year][service];
+    } catch (error) {
+        throw new MissingPriceConfigurationError();
+    }
 
     const relevantDiscounts = availableDiscounts.filter(discount => discount.discountedService === service);
     const relevantPrices = relevantDiscounts.sort((a, b) => a.discountedPrice - b.discountedPrice);
