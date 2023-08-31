@@ -1,4 +1,6 @@
-import { updateSelectedServices, calculatePrice, ServiceYear, ServiceType } from ".";
+import { updateSelectedServices, calculatePrice } from ".";
+import { ServiceType } from "./types/service-type";
+import { ServiceYear } from "./types/service-year";
 
 describe("updateSelectedServices.select", () => {
     test("should select when not selected", () => {
